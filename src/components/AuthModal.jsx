@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 
-export default function AuthModal({ isOpen, onClose }) {
+export default function AuthModal({ isOpen, onClose, onLogin }) {
   const [mode, setMode] = useState('signin'); // 'signin' or 'signup'
   const [role, setRole] = useState('student'); // for signup
+  const [name, setName] = useState('');
 
   if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (onLogin) {
+      onLogin(mode === 'signup' ? name : 'User');
+    }
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -16,11 +24,11 @@ export default function AuthModal({ isOpen, onClose }) {
           <p>{mode === 'signin' ? 'Sign in to track your orders' : 'Create an account to skip the lines'}</p>
         </div>
 
-        <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
+        <form className="auth-form" onSubmit={handleSubmit}>
           {mode === 'signup' && (
             <div className="form-group">
               <label>Full Name</label>
-              <input type="text" placeholder="Dr. Jane Doe / John Doe" required />
+              <input type="text" placeholder="Dr. Jane Doe / John Doe" required value={name} onChange={(e) => setName(e.target.value)} />
             </div>
           )}
 
@@ -56,7 +64,7 @@ export default function AuthModal({ isOpen, onClose }) {
             </div>
           )}
 
-          <button className="btn-glow auth-submit-btn">
+          <button type="submit" className="btn-glow auth-submit-btn">
             {mode === 'signin' ? 'Sign In' : 'Create Account'}
           </button>
         </form>

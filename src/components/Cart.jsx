@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 
-export default function Cart({ cart, removeFromCart }) {
+export default function Cart({ cart, removeFromCart, clearCart }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPlaced, setIsPlaced] = useState(false);
   const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const handleCheckout = () => {
+    setIsPlaced(true);
+    setTimeout(() => {
+      setIsPlaced(false);
+      if (clearCart) clearCart();
+      setIsOpen(false);
+    }, 2000);
+  };
 
   return (
     <>
@@ -39,7 +49,13 @@ export default function Cart({ cart, removeFromCart }) {
                     <span>Total</span>
                     <span>${total.toFixed(2)}</span>
                 </div>
-                <button className="checkout-btn">Checkout</button>
+                {isPlaced ? (
+                  <div className="order-success-anim">
+                     <span className="success-icon">✅</span> Order Placed!
+                  </div>
+                ) : (
+                  <button className="checkout-btn" onClick={handleCheckout}>Checkout</button>
+                )}
             </div>
         )}
       </div>
