@@ -27,7 +27,9 @@ function App() {
   return (
     <div className={`app-container ${role === 'lecturer' ? 'theme-lecturer' : 'theme-student'}`}>
       <nav className="navbar">
-        <div className="logo">Campus<span>Eats</span></div>
+        <div className="logo" style={{ cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          Campus<span>Eats</span>
+        </div>
         <ul className="nav-links">
           <li><a href="#menu">Menu</a></li>
           <li><a href="#features">Features</a></li>
